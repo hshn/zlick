@@ -11,7 +11,7 @@ ThisBuild / versionScheme := Some("early-semver")
 val slickVersion      = "3.6.1"
 val zioVersion        = "2.1.22"
 val zioPreludeVersion = "1.0.0-RC46"
-val h2Version         = "2.2.224"
+val h2Version         = "2.4.240"
 
 lazy val zlick = (project in file(".") withId "zlick")
   .aggregate(zlickCore, zlickPrelude)
