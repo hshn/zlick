@@ -8,11 +8,10 @@ import zio.Scope
 import zio.ZIO
 
 object SlickEnvironment {
-  def config[P <: JdbcProfile: ClassTag](config: Config, path: String): ZIO[Scope, Nothing, DatabaseConfig[P]] =
+  def config[P <: JdbcProfile: ClassTag](config: Config, path: String): ZIO[Scope, Throwable, DatabaseConfig[P]] =
     ZIO
       .attempt(DatabaseConfig.forConfig[P](path = path, config = config))
       .withFinalizer { databaseConfig =>
         ZIO.attemptBlocking(databaseConfig.db.close()).orDie
       }
-      .orDie
 }

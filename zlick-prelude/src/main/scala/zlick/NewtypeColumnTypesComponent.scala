@@ -9,7 +9,7 @@ import zio.prelude.Newtype
 trait NewtypeColumnTypesComponent { self: JdbcProfile =>
   trait NewtypeColumnTypesApi { api: JdbcAPI =>
 
-    extension (self: JdbcProfile#MappedColumnTypeFactory) {
+    extension (factory: JdbcProfile#MappedColumnTypeFactory) {
       def newtypeWrap[U: BaseColumnType](newtype: Newtype[U])(using ClassTag[newtype.Type]): BaseColumnType[newtype.Type] =
         MappedColumnType.base[newtype.Type, U](newtype.unwrap, newtype.wrap)
 

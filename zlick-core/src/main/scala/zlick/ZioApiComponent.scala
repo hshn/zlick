@@ -24,20 +24,17 @@ trait ZioApiComponent { self: JdbcProfile =>
       def fromEither[A, B, S <: NoStream, E <: Effect](
         f: ExecutionContext ?=> DBIOAction[Either[A, B], S, E]
       )(using
-        @implicitNotFound("DBIOAction[Either[${A}, ${B}], ${S}, ${E}]] needs to have a Transactional effect")
+        @implicitNotFound("DBIOAction[Either[${A}, ${B}], ${S}, ${E}] needs to have a Transactional effect")
         ev1: E <:< Effect.Transactional
       ): ZIO[Any, A, B] =
         succeed(f).absolve
     }
 
     extension [E <: Throwable, A](zio: ZIO[Any, E, A]) {
-      def unsafeToDBIO: DBIOAction[A, NoStream, Effect] = {
-        val runtime = Runtime.default
-        val future  = Unsafe.unsafe { implicit unsafe =>
-          runtime.unsafe.runToFuture(zio)
-        }
-        DBIO.from(future)
-      }
+      def unsafeToDBIO: DBIOAction[A, NoStream, Effect] =
+        DBIO.from(Unsafe.unsafe { implicit unsafe =>
+          Runtime.default.unsafe.runToFuture(zio)
+        })
     }
   }
 }

@@ -6,11 +6,13 @@ import slick.jdbc.JdbcProfile
 trait EitherDBIOComponent { self: JdbcProfile =>
   trait EitherDBIOApi { api: JdbcAPI =>
 
-    class RollbackOnLeft[L, R, E <: Effect](action: DBIOAction[Either[L, R], NoStream, E]) {
+    opaque type RollbackOnLeft[L, R, E <: Effect] = DBIOAction[Either[L, R], NoStream, E]
+
+    extension [L, R, E <: Effect](rollback: RollbackOnLeft[L, R, E]) {
       def transactionally(using
         ExecutionContext
       ): DBIOAction[Either[L, R], NoStream, E & Effect.Transactional] = {
-        val lifted = action.flatMap {
+        val lifted = rollback.flatMap {
           case Right(r) => DBIO.successful(r)
           case Left(l)  => DBIO.failed(EitherDBIOComponent.EitherLeftWrappingException(l))
         }
@@ -51,7 +53,7 @@ trait EitherDBIOComponent { self: JdbcProfile =>
       def right(using ec: ExecutionContext, ev: L =:= Nothing): DBIOAction[R, NoStream, E] =
         action.map(_.fold(ev(_), identity))
 
-      def rollbackOnLeft: RollbackOnLeft[L, R, E] = new RollbackOnLeft(action)
+      def rollbackOnLeft: RollbackOnLeft[L, R, E] = action
     }
 
   }
