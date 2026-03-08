@@ -34,7 +34,7 @@ jobs:
           cache: sbt
       - uses: sbt/setup-sbt@v1
       - run: sbt test
-      - uses: mikepenz/action-junit-report@v5
+      - uses: mikepenz/action-junit-report@v6
         if: always()
         with:
           report_paths: '**/target/test-reports/*.xml'
