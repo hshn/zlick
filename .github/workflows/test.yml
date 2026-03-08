@@ -20,6 +20,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
     strategy:
       matrix:
         java: ["21", "25"]
