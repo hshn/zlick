@@ -1,4 +1,4 @@
-ThisBuild / scalaVersion := "3.8.1"
+ThisBuild / scalaVersion := "3.8.2"
 ThisBuild / organization := "dev.hshn"
 ThisBuild / homepage     := Some(url("https://github.com/hshn/zlick"))
 ThisBuild / licenses     := List("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0"))
