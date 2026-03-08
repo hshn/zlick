@@ -6,9 +6,12 @@ import slick.jdbc.JdbcProfile
 trait EitherDBIOComponent { self: JdbcProfile =>
   trait EitherDBIOApi { api: JdbcAPI =>
 
+    /** A `DBIOAction[Either[L, R], ...]` tagged to roll back the transaction on `Left`. */
     opaque type RollbackOnLeft[L, R, E <: Effect] = DBIOAction[Either[L, R], NoStream, E]
 
     extension [L, R, E <: Effect](rollback: RollbackOnLeft[L, R, E]) {
+
+      /** Runs the action in a transaction that commits on `Right` and rolls back on `Left`. */
       def transactionally(using
         ExecutionContext
       ): DBIOAction[Either[L, R], NoStream, E & Effect.Transactional] = {
@@ -26,6 +29,7 @@ trait EitherDBIOComponent { self: JdbcProfile =>
 
     extension [L, R, E <: Effect](action: DBIOAction[Either[L, R], NoStream, E]) {
 
+      /** Applies `f` to the `Right` value, short-circuits on `Left`. */
       def semiflatMap[R1, E1 <: Effect](
         f: R => DBIOAction[R1, NoStream, E1]
       )(using ExecutionContext): DBIOAction[Either[L, R1], NoStream, E & E1] =
@@ -34,6 +38,7 @@ trait EitherDBIOComponent { self: JdbcProfile =>
           case Left(l)  => DBIO.successful(Left(l))
         }
 
+      /** Applies a pure function to the `Right` value that returns an `Either`. */
       def subflatMap[L1 >: L, R1](
         f: R => Either[L1, R1]
       )(using ExecutionContext): DBIOAction[Either[L1, R1], NoStream, E] =
@@ -42,6 +47,7 @@ trait EitherDBIOComponent { self: JdbcProfile =>
           case Left(l)  => Left(l)
         }
 
+      /** Applies `f` to the `Right` value, where `f` itself returns a `DBIOAction[Either[...]]`. */
       def flatMapF[L1 >: L, R1, E1 <: Effect](
         f: R => DBIOAction[Either[L1, R1], NoStream, E1]
       )(using ExecutionContext): DBIOAction[Either[L1, R1], NoStream, E & E1] =
@@ -50,9 +56,11 @@ trait EitherDBIOComponent { self: JdbcProfile =>
           case Left(l)  => DBIO.successful(Left(l))
         }
 
+      /** Extracts the `Right` value. Only available when `Left` is `Nothing`. */
       def right(using ec: ExecutionContext, ev: L =:= Nothing): DBIOAction[R, NoStream, E] =
         action.map(_.fold(ev(_), identity))
 
+      /** Tags this action so that `.transactionally` will roll back on `Left` instead of committing. */
       def rollbackOnLeft: RollbackOnLeft[L, R, E] = action
     }
 

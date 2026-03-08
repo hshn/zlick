@@ -60,6 +60,11 @@ object ZioApiComponentSpec extends ZIOSpecDefault {
           result <- db.runZIO.attempt(ZIO.succeed(42).unsafeToDBIO)
         } yield assertTrue(result == 42)
       }
+      test("propagates ZIO failure as DBIO failure") {
+        for {
+          result <- db.runZIO.attempt(ZIO.fail(new RuntimeException("boom")).unsafeToDBIO).exit
+        } yield assertTrue(result.isFailure)
+      }
     }
   } @@ TestAspect.sequential
 }
