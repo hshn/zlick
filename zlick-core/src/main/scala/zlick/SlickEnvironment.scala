@@ -8,6 +8,8 @@ import zio.Scope
 import zio.ZIO
 
 object SlickEnvironment {
+
+  /** Creates a scoped [[DatabaseConfig]] that automatically closes the database when the scope ends. */
   def config[P <: JdbcProfile: ClassTag](config: Config, path: String): ZIO[Scope, Throwable, DatabaseConfig[P]] =
     ZIO
       .attempt(DatabaseConfig.forConfig[P](path = path, config = config))
