@@ -1,4 +1,4 @@
-# zlick
+# zlick [![Maven Central](https://img.shields.io/maven-central/v/dev.hshn/zlick-core_3)](https://central.sonatype.com/artifact/dev.hshn/zlick-core_3) [![Test](https://github.com/hshn/zlick/actions/workflows/test.yml/badge.svg)](https://github.com/hshn/zlick/actions/workflows/test.yml)
 
 Slick ZIO bindings for Scala 3.
 
