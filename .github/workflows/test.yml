@@ -38,7 +38,7 @@ jobs:
         if: always()
         with:
           report_paths: '**/target/test-reports/*.xml'
-          report_name: "Test Results (Java ${{ matrix.java }})"
+          check_name: "Test Results (Java ${{ matrix.java }})"
 
   test-all:
     if: always()
