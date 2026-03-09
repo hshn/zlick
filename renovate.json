@@ -25,6 +25,10 @@
         "dev.zio:zio-test-magnolia"
       ],
       "groupName": "zio"
+    },
+    {
+      "matchPackageNames": ["org.scala-lang:scala3-library_3"],
+      "allowedVersions": "/^3\\.3\\./"
     }
   ]
 }
