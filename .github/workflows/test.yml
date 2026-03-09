@@ -23,6 +23,7 @@ jobs:
     permissions:
       checks: write
     strategy:
+      fail-fast: false
       matrix:
         java: ["21", "25"]
         scala: ["3.3.7", "3.8.2"]
