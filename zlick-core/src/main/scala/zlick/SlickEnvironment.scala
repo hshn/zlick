@@ -1,6 +1,7 @@
 package zlick
 
 import com.typesafe.config.Config
+import com.typesafe.config.ConfigFactory
 import scala.reflect.ClassTag
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
@@ -16,4 +17,8 @@ object SlickEnvironment {
       .withFinalizer { databaseConfig =>
         ZIO.attemptBlocking(databaseConfig.db.close()).orDie
       }
+
+  /** Creates a scoped [[DatabaseConfig]] that automatically closes the database when the scope ends. */
+  def config[P <: JdbcProfile: ClassTag](path: String): ZIO[Scope, Throwable, DatabaseConfig[P]] =
+    config[P](path = path, config = ConfigFactory.load())
 }
