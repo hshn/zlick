@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0-rc.3](https://github.com/hshn/zlick/compare/v1.0.0-rc.2...v1.0.0-rc.3) (2026-03-15)
+
+
+### Features
+
+* return ZLayer from SlickEnvironment and add forURI ([#21](https://github.com/hshn/zlick/issues/21)) ([5281af2](https://github.com/hshn/zlick/commit/5281af21d8956c0a61d1a49e92064005c2b04b9f))
+
 ## [1.0.0-rc.2](https://github.com/hshn/zlick/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2026-03-09)
 
 
