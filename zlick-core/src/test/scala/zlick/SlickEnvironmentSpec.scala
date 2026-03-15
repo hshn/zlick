@@ -39,7 +39,7 @@ object SlickEnvironmentSpec extends ZIOSpecDefault {
         dbConfig.profile == H2Profile
       )
     }.provideLayer(
-      SlickEnvironment.forURI[H2Profile](new java.net.URI("jdbc:h2:mem:slick_env_test;DB_CLOSE_DELAY=-1"))
+      SlickEnvironment.forURI[H2Profile](getClass.getResource("/forURI-test.conf").toURI)
     )
   } @@ TestAspect.sequential
 }
