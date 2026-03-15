@@ -19,7 +19,7 @@ object SlickEnvironment {
 
   /** Creates a scoped [[DatabaseConfig]] that automatically closes the database when the scope ends. */
   def forConfig[P <: BasicProfile: ClassTag](path: String)(using Tag[P]): ZLayer[Scope, Throwable, DatabaseConfig[P]] =
-    forConfig[P](path = path, config = ConfigFactory.load())
+    configure(DatabaseConfig.forConfig[P](path = path, config = ConfigFactory.load()))
 
   /** Creates a scoped [[DatabaseConfig]] from a URI that automatically closes the database when the scope ends. */
   def forURI[P <: BasicProfile: ClassTag](uri: URI)(using Tag[P]): ZLayer[Scope, Throwable, DatabaseConfig[P]] =
