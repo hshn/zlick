@@ -9,7 +9,7 @@ ThisBuild / description   := "Slick ZIO bindings for Scala 3"
 ThisBuild / versionScheme := Some("early-semver")
 
 val slickVersion      = "3.6.1"
-val zioVersion        = "2.1.26"
+val zioVersion        = "2.1.27"
 val zioPreludeVersion = "1.0.0-RC48"
 val h2Version         = "2.5.252"
 
